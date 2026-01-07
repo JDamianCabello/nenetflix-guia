@@ -1,0 +1,16 @@
+# Claude Code Documentation
+CLAUDE.md
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*

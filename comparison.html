@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, maximum-scale=5"/>
+  <title>NENETFLIX - Comparación de Precios</title>
+  <meta name="theme-color" content="#0066CC"/>
+  <meta name="description" content="Compara los precios de NENETFLIX con otras plataformas de streaming y ahorra hasta un 90%."/>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="favicon.svg"/>
+</head>
+<body>
+  <!-- Progress bar -->
+  <div class="progress" id="progress" aria-hidden="true">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="NENETFLIX">
+        <div class="brand-title">NENETFLIX</div>
+        <div class="brand-sub">Servicio de Streaming Privado</div>
+      </a>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menú de navegación">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="nav-tabs" aria-label="Navegación principal">
+        <a class="nav-tab" href="index.html">Inicio</a>
+        <a class="nav-tab" href="guide.html">Guía de instalación</a>
+        <a class="nav-tab active" href="comparison.html">Comparación</a>
+        <a class="nav-tab" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Peticiones</a>
+      </nav>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+      <nav class="mobile-nav">
+        <a class="mobile-nav-item" href="index.html">Inicio</a>
+        <a class="mobile-nav-item" href="guide.html">Guía de instalación</a>
+        <a class="mobile-nav-item active" href="comparison.html">Comparación</a>
+        <a class="mobile-nav-item" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Peticiones</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>Comparación de Precios</h1>
+        <p>Descubre cuánto puedes ahorrar con NENETFLIX comparado con las plataformas tradicionales de streaming.</p>
+      </div>
+    </section>
+
+    <!-- Detailed Comparison -->
+    <section class="section">
+      <div class="container">
+        <section class="compare-section">
+          <div class="compare-wrap">
+            <div class="compare-title">Comparativa detallada de servicios de streaming</div>
+            <div class="compare-sub">Precios actualizados en 2026 (España)</div>
+            <div class="compare-disclaimer">
+              <strong>Selecciona los servicios que te gustaría tener</strong> y descubre cuánto puedes ahorrar con NENETFLIX.
+            </div>
+            <div class="compare-note" style="text-align: center; font-size: 14px; margin-bottom: 0.5rem;">
+              <span id="selectedCount" style="font-weight: 600; color: var(--color-primary);">4 servicios seleccionados</span>
+            </div>
+            <div class="compare-note" style="text-align: center; font-size: 13px; margin-bottom: 1rem; color: var(--color-text-light);">
+              Los precios mostrados son aproximados y pueden variar según promociones, región y tipo de suscripción.
+            </div>
+
+            <div class="compare-table">
+              <div class="trow thead">
+                <div class="tcell center">
+                  <input type="checkbox" id="selectAll" class="service-checkbox">
+                  <label for="selectAll" style="cursor: pointer; font-size: 11px; margin-left: 4px;">Todos</label>
+                </div>
+                <div class="tcell">Plataforma</div>
+                <div class="tcell center">Precio/mes</div>
+                <div class="tcell center">Precio/año</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="7.99" data-yearly="95.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox" checked>
+                </div>
+                <div class="tcell">Netflix</div>
+                <div class="tcell center">7,99€</div>
+                <div class="tcell center">95,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="6.99" data-yearly="83.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox" checked>
+                </div>
+                <div class="tcell">HBO Max</div>
+                <div class="tcell center">6,99€</div>
+                <div class="tcell center">83,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="6.99" data-yearly="83.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox" checked>
+                </div>
+                <div class="tcell">Disney+</div>
+                <div class="tcell center">6,99€</div>
+                <div class="tcell center">83,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="4.99" data-yearly="59.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox" checked>
+                </div>
+                <div class="tcell">Prime Video</div>
+                <div class="tcell center">4,99€</div>
+                <div class="tcell center">59,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="6.99" data-yearly="83.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">Apple TV+</div>
+                <div class="tcell center">6,99€</div>
+                <div class="tcell center">83,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="14" data-yearly="168">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">Movistar Plus+</div>
+                <div class="tcell center">14€</div>
+                <div class="tcell center">168€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="7.99" data-yearly="95.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">Filmin</div>
+                <div class="tcell center">7,99€</div>
+                <div class="tcell center">95,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="6.99" data-yearly="83.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">SkyShowtime</div>
+                <div class="tcell center">6,99€</div>
+                <div class="tcell center">83,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="7.99" data-yearly="95.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">Paramount+</div>
+                <div class="tcell center">7,99€</div>
+                <div class="tcell center">95,88€</div>
+              </div>
+
+              <div class="trow service-row" data-monthly="7.99" data-yearly="95.88">
+                <div class="tcell center">
+                  <input type="checkbox" class="service-checkbox">
+                </div>
+                <div class="tcell">Crunchyroll</div>
+                <div class="tcell center">7,99€</div>
+                <div class="tcell center">95,88€</div>
+              </div>
+
+              <div class="trow ttotal" style="background-color: rgba(0,102,204,0.05);">
+                <div class="tcell"></div>
+                <div class="tcell"><strong>TOTAL (servicios seleccionados)</strong></div>
+                <div class="tcell center"><strong id="totalMonthly">~27€</strong></div>
+                <div class="tcell center"><strong id="totalYearly">~324€</strong></div>
+              </div>
+
+              <div class="trow ttotal" style="background-color: rgba(0,102,204,0.1); border-top: 3px solid var(--color-primary);">
+                <div class="tcell"></div>
+                <div class="tcell"><strong>NENETFLIX</strong></div>
+                <div class="tcell center"><strong>4,17€</strong></div>
+                <div class="tcell center"><strong>50€</strong></div>
+              </div>
+            </div>
+
+            <div class="savings-highlight">
+              <div class="savings-title">Ahorro anual con NENETFLIX</div>
+              <div class="savings-amount" id="savingsAmount">274€</div>
+              <div class="savings-note" id="savingsNote">Equivalente a más del 85% de ahorro</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <div class="section-head" style="margin-top: 3rem;">
+          <h2>¿Qué incluye NENETFLIX?</h2>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Todo el contenido</div>
+            <div class="card-text">Acceso a películas, series, anime, documentales y más de todas las plataformas en un solo lugar.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">2 pantallas simultáneas</div>
+            <div class="card-text">Comparte tu cuenta con otra persona y disfrutad del contenido al mismo tiempo.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Peticiones incluidas</div>
+            <div class="card-text">Si no encuentras algo, solicítalo y lo añadimos a la biblioteca en poco tiempo.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Sin restricciones geográficas</div>
+            <div class="card-text">Disfruta del servicio desde cualquier país sin bloqueos por localización.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Calidad premium</div>
+            <div class="card-text">Contenido en la mejor calidad disponible, incluyendo 4K cuando está disponible.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Sin publicidad</div>
+            <div class="card-text">Disfruta de todo el contenido sin interrupciones publicitarias.</div>
+          </div>
+        </div>
+
+        <div class="cta-row" style="margin-top: 3rem;">
+          <a class="btn btn-primary btn-lg" href="guide.html">Comenzar ahora</a>
+          <a class="btn btn-lg" href="index.html">Volver al inicio</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+      <div class="container">
+        <div class="footer-card">
+          <h2>¿Listo para ahorrar?</h2>
+          <p>Accede a todo el contenido por solo 50€ al año.</p>
+        </div>
+        <div class="footer-mini">© NENETFLIX - Servicio de Streaming Privado</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Back to top button -->
+  <button class="to-top" id="toTop" aria-label="Volver arriba">↑</button>
+
+  <script src="app.js"></script>
+</body>
+</html>

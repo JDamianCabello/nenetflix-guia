@@ -1,317 +1,256 @@
-const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-if(conn && (conn.saveData || (conn.effectiveType && /2g/.test(conn.effectiveType)))){ document.body.classList.add('save-data'); }
+// NENETFLIX - Simplified JavaScript
 
-/* NN wordmark (index): auto-open once on load (stays open until refresh) */
-const nnToggles = Array.from(document.querySelectorAll("[data-nn-toggle]"));
-if(nnToggles.length){
-  const isIndex = /(^|\/)(index\.html)?$/.test(location.pathname) || location.pathname === "/";
-  if(isIndex){
-    // Trigger after a short delay so fonts/layout settle (smoother)
-    window.addEventListener("load", ()=>{
-      setTimeout(()=>{
-        nnToggles.forEach(el => el.classList.add("is-open"));
-      }, 750);
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (mobileMenuBtn && mobileMenu) {
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+
+    // Prevent body scroll when menu is open
+    if (mobileMenu.classList.contains('open')) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Close menu when clicking on a link
+  const mobileNavItems = mobileMenu.querySelectorAll('.mobile-nav-item');
+  mobileNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      mobileMenuBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
     });
-}
-}
-/* Common UI bits */
-const pages = window.NENETFLIX_PAGES || [];
-const grid = document.querySelector(".pdf-grid");
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-const lightboxClose = document.getElementById("lightboxClose");
-const toTop = document.getElementById("toTop");
-const posterWall = document.getElementById("posterWall");
-let currentIndex = -1;
-const pageSrcs = pages.slice();
+  });
 
-function buildPages(){
-  if(!grid) return;
-  const titles = [
-    "Todo en un solo lugar (precio y comparación)",
-    "Qué es NENETFLIX (Plex)",
-    "Qué contenido hay",
-    "Cómo funciona (3 pasos)",
-    "Dónde puedes usarlo",
-    "Inicio de sesión (web)",
-    "Inicio de sesión en TV (con móvil)",
-    "Primer inicio y limpieza del menú",
-    "Ordenar bibliotecas (pelis/series)",
-    ];
-
-  pages.forEach((src, idx) => {
-    const card = document.createElement("article");
-    card.className = "page reveal";
-    card.innerHTML = `
-      <img src="${src}" alt="Guía NENETFLIX - página ${idx+1}" loading="lazy"/>
-    `;
-    const img = card.querySelector("img");
-    img.addEventListener("click", () => openLightbox(src, idx));
-    card.dataset.idx = String(idx);
-    grid.appendChild(card);
-
-    // Neon divider between slides (visible on mobile + desktop)
-    if(idx !== pages.length - 1){
-      const divider = document.createElement("div");
-      divider.className = "neon-divider reveal";
-      divider.setAttribute("aria-hidden","true");
-      grid.appendChild(divider);
+  // Close menu when clicking outside
+  mobileMenu.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+      mobileMenuBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
     }
   });
 }
 
-function openLightbox(src, idx){
-  if(!lightbox || !lightboxImg) return;
-  if(typeof idx === "number") currentIndex = idx;
-  else currentIndex = pageSrcs.indexOf(src);
-  lightboxImg.src = src;
-  lightbox.classList.add("open");
-  lightbox.setAttribute("aria-hidden","false");
-}
+// Scroll Progress Bar
+const progress = document.getElementById('progress');
+const progressBar = document.getElementById('progressBar');
 
-function closeLightbox(){
-  if(!lightbox || !lightboxImg) return;
-  lightbox.classList.remove("open");
-  lightbox.setAttribute("aria-hidden","true");
-  lightboxImg.src = "";
-}
+function updateProgress() {
+  if (!progressBar) return;
 
-if(lightbox && lightboxClose){
-  lightbox.addEventListener("click", (e)=>{
-    if(e.target === lightbox) closeLightbox();
-  });
-  lightboxClose.addEventListener("click", closeLightbox);
-}
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-const lbPrev = document.getElementById("lightboxPrev");
-const lbNext = document.getElementById("lightboxNext");
-
-function showAt(i){
-  if(i < 0) i = pageSrcs.length - 1;
-  if(i >= pageSrcs.length) i = 0;
-  currentIndex = i;
-  openLightbox(pageSrcs[currentIndex], currentIndex);
-}
-if(lbPrev) lbPrev.addEventListener("click", (e)=>{ e.stopPropagation(); showAt(currentIndex-1); });
-if(lbNext) lbNext.addEventListener("click", (e)=>{ e.stopPropagation(); showAt(currentIndex+1); });
-
-document.addEventListener("keydown", (e)=>{
-  if(e.key === "Escape") closeLightbox();
-  if(lightbox && lightbox.classList.contains("open")){
-    if(e.key === "ArrowLeft") showAt(currentIndex-1);
-    if(e.key === "ArrowRight") showAt(currentIndex+1);
-  }
-});
-
-const progressTrack = document.getElementById("progress");
-const progressBar = document.getElementById("progressBar");
-
-function handleScroll(){
-  const y = window.scrollY || 0;
-  const docH = document.documentElement.scrollHeight - window.innerHeight;
-
-  // Progress bar: fill inner bar (track is always visible)
-  if(progressBar && docH > 0){
-    progressBar.style.width = (y/docH*100).toFixed(2) + "%";
-  }
-
-  updateGlow();
-
-  if(toTop){
-    if(y > 600) toTop.classList.add("show");
-    else toTop.classList.remove("show");
-  }
-
-  // subtle parallax for hero posters (if present)
-  if(posterWall){
-    posterWall.style.transform = `perspective(900px) rotateY(-8deg) rotateX(4deg) translateY(${Math.min(0, -y*0.03)}px)`;
+  if (docHeight > 0) {
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    progressBar.style.width = scrollPercent + '%';
   }
 }
 
-// rAF throttling for smoother scrolling on mobile
-let _ticking = false;
-function onScroll(){
-  if(_ticking) return;
-  _ticking = true;
-  requestAnimationFrame(()=>{
-    handleScroll();
-    _ticking = false;
+// Back to Top Button
+const toTopBtn = document.getElementById('toTop');
+
+function updateBackToTop() {
+  if (!toTopBtn) return;
+
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  if (scrollTop > 300) {
+    toTopBtn.classList.add('show');
+  } else {
+    toTopBtn.classList.remove('show');
+  }
+}
+
+// Scroll event handler (throttled with RAF)
+let scrollTicking = false;
+
+function onScroll() {
+  if (scrollTicking) return;
+
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    updateProgress();
+    updateBackToTop();
+    scrollTicking = false;
   });
 }
-window.addEventListener("scroll", onScroll, {passive:true});
-window.addEventListener("load", handleScroll, {passive:true});
 
-if(toTop){
-  toTop.addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
-}
-
-/* Reveal animation */
-const io = new IntersectionObserver((entries)=>{
-  for(const en of entries){
-    if(en.isIntersecting) en.target.classList.add("show");
-  }
-},{threshold: 0.12});
-
-function watchReveals(){
-  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
-}
-
-// Removed legacy drawer/hamburger code (not used anymore)
-
-/* init */
-if(grid) buildPages();
-watchReveals();
-if(posterWall) posterWall.classList.add("float");
-
-// v7: subtle hero glow parallax + button ripple (mobile-friendly)
-const heroEl = document.querySelector(".hero");
-function updateGlow(){
-  if(!heroEl) return;
-  const y = window.scrollY || 0;
-  const xOff = Math.sin(y/420) * 12;
-  const yOff = (y/18) * 0.35;
-  heroEl.style.setProperty("--glowX", xOff.toFixed(2) + "px");
-  heroEl.style.setProperty("--glowY", yOff.toFixed(2) + "px");
-}
-updateGlow();
-
-document.querySelectorAll(".btn").forEach(btn=>{
-  btn.addEventListener("pointerdown", (e)=>{
-    const r = btn.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    btn.style.setProperty("--rx", x.toFixed(2) + "%");
-    btn.style.setProperty("--ry", y.toFixed(2) + "%");
-    btn.classList.remove("ripple");
-    // force reflow
-    void btn.offsetWidth;
-    btn.classList.add("ripple");
-  }, {passive:true});
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('load', () => {
+  updateProgress();
+  updateBackToTop();
 });
 
-// v8RevealFallback: ensure reveal never stays hidden/blurred
-window.addEventListener("load", ()=>{
-  setTimeout(()=>{
-    document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
-  }, 600);
+// Back to top click
+if (toTopBtn) {
+  toTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Tab Switching Logic
+const tabs = document.querySelectorAll('.tab');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const targetTab = tab.getAttribute('data-tab');
+
+    // Remove active class from all tabs and panels
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+
+    tabPanels.forEach(panel => {
+      panel.classList.remove('active');
+    });
+
+    // Add active class to clicked tab
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+
+    // Show corresponding panel
+    const targetPanel = document.getElementById('panel-' + targetTab);
+    if (targetPanel) {
+      targetPanel.classList.add('active');
+    }
+  });
 });
 
-// v10: mark images loaded (remove shimmer)
-document.querySelectorAll("img").forEach(img=>{
-  if(img.complete) img.classList.add("is-loaded");
-  img.addEventListener("load", ()=>img.classList.add("is-loaded"), {passive:true});
-});
+// Reveal on Scroll (Intersection Observer)
+const revealElements = document.querySelectorAll('.reveal');
 
-// v10: share button (Web Share API + WhatsApp fallback)
-const shareBtn = document.getElementById("shareBtn");
-if(shareBtn){
-  shareBtn.addEventListener("click", async ()=>{
-    const url = window.location.href;
-    const title = "NENETFLIX · Guía";
-    const text = "🎬 NENETFLIX: streaming privado tipo Netflix en Plex. 50€ al año · 2 pantallas · Peticiones incluidas.";
-    try{
-      if(navigator.share){
-        await navigator.share({title, text, url});
-      }else{
-        try{ await navigator.clipboard.writeText(url); alert("Enlace copiado ✅"); }catch(e){ alert(url); }
+if (revealElements.length > 0) {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show', 'in');
+        revealObserver.unobserve(entry.target);
       }
-    }catch(e){}
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  revealElements.forEach(el => {
+    revealObserver.observe(el);
   });
 }
 
-// v10: mode toggle (Guía vs Modo fácil)
-const modeFull = document.getElementById("modeFull");
-const modeEasy = document.getElementById("modeEasy");
-const easyMode = document.getElementById("easyMode");
-const fullGuide = document.getElementById("fullGuide");
-
-function setMode(mode){
-  const isEasy = mode === "easy";
-  if(easyMode) easyMode.classList.toggle("active", isEasy);
-  if(fullGuide) fullGuide.classList.toggle("hidden", isEasy);
-  if(modeFull){ modeFull.classList.toggle("active", !isEasy); modeFull.setAttribute("aria-selected", String(!isEasy)); }
-  if(modeEasy){ modeEasy.classList.toggle("active", isEasy); modeEasy.setAttribute("aria-selected", String(isEasy)); }
-  localStorage.setItem("nenetflix_mode", mode);
-}
-
-const savedMode = localStorage.getItem("nenetflix_mode");
-if(savedMode) setMode(savedMode);
-
-modeFull?.addEventListener("click", ()=> setMode("full"));
-modeEasy?.addEventListener("click", ()=> setMode("easy"));
-
-// v10: FAQ accordion
-document.querySelectorAll(".faq-q").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    btn.classList.toggle("open");
-  });
+// Fallback: Show all reveals after load (in case observer doesn't trigger)
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    revealElements.forEach(el => {
+      el.classList.add('show', 'in');
+    });
+  }, 500);
 });
 
-// v10: sound toggle (tiny UI click)
-const soundBtn = document.getElementById("soundBtn");
-const soundIcon = document.getElementById("soundIcon");
-let soundOn = localStorage.getItem("nenetflix_sound") === "1";
+// Price Comparison Calculator
+const selectAllCheckbox = document.getElementById('selectAll');
+const serviceCheckboxes = document.querySelectorAll('.service-row .service-checkbox');
+const totalMonthlyEl = document.getElementById('totalMonthly');
+const totalYearlyEl = document.getElementById('totalYearly');
+const savingsAmountEl = document.getElementById('savingsAmount');
+const savingsNoteEl = document.getElementById('savingsNote');
+const selectedCountEl = document.getElementById('selectedCount');
 
-function updateSoundUI(){
-  if(soundIcon) soundIcon.textContent = soundOn ? "🔊" : "🔇";
-}
-updateSoundUI();
+const NENETFLIX_YEARLY = 50;
 
-function uiClick(){
-  if(!soundOn) return;
-  try{
-    const AC = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AC();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = "triangle";
-    o.frequency.value = 520;
-    g.gain.value = 0.0001;
-    o.connect(g); g.connect(ctx.destination);
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.08);
-    o.stop(ctx.currentTime + 0.09);
-    o.onended = ()=> ctx.close();
-  }catch(e){}
-}
+function calculateTotals() {
+  let totalMonthly = 0;
+  let totalYearly = 0;
+  let selectedCount = 0;
 
-// Attach click sound to buttons/links
-document.addEventListener("click", (e)=>{
-  const t = e.target.closest("button, a");
-  if(t) uiClick();
-}, {passive:true});
-
-soundBtn?.addEventListener("click", ()=>{
-  soundOn = !soundOn;
-  localStorage.setItem("nenetflix_sound", soundOn ? "1" : "0");
-  updateSoundUI();
-});
-
-// Hook reset when opening/closing
-const _openLightbox = openLightbox;
-openLightbox = function(src, idx){
-  resetLbTransform();
-  _openLightbox(src, idx);
-}
-const _closeLightbox = closeLightbox;
-closeLightbox = function(){
-  resetLbTransform();
-  _closeLightbox();
-}
-
-// v13: one-time logo animation
-(function(){
-  const key = "nenetflix_logo_once";
-  const h1 = document.getElementById("heroTitle");
-  if(h1){
-    const done = localStorage.getItem(key) === "1";
-    if(!done){
-      h1.classList.add("logo-once");
-      localStorage.setItem(key, "1");
+  document.querySelectorAll('.service-row').forEach(row => {
+    const checkbox = row.querySelector('.service-checkbox');
+    if (checkbox && checkbox.checked) {
+      totalMonthly += parseFloat(row.dataset.monthly);
+      totalYearly += parseFloat(row.dataset.yearly);
+      selectedCount++;
     }
+  });
+
+  // Update selected count
+  if (selectedCountEl) {
+    const plural = selectedCount === 1 ? 'servicio seleccionado' : 'servicios seleccionados';
+    selectedCountEl.textContent = `${selectedCount} ${plural}`;
   }
-})();
 
+  // Update totals display
+  if (totalMonthlyEl) {
+    totalMonthlyEl.textContent = `~${Math.round(totalMonthly)}€`;
+  }
+  if (totalYearlyEl) {
+    totalYearlyEl.textContent = `~${Math.round(totalYearly)}€`;
+  }
 
-// Mobile hamburger/menu removed (requested): actions are visible on mobile now.
+  // Calculate savings
+  const savings = totalYearly - NENETFLIX_YEARLY;
+  const savingsPercent = totalYearly > 0 ? ((savings / totalYearly) * 100).toFixed(0) : 0;
+
+  if (savingsAmountEl) {
+    savingsAmountEl.textContent = `${Math.round(savings)}€`;
+  }
+  if (savingsNoteEl) {
+    savingsNoteEl.textContent = `Equivalente a más del ${savingsPercent}% de ahorro`;
+  }
+}
+
+// Select/Deselect all functionality
+if (selectAllCheckbox) {
+  selectAllCheckbox.addEventListener('change', () => {
+    const isChecked = selectAllCheckbox.checked;
+    serviceCheckboxes.forEach(checkbox => {
+      checkbox.checked = isChecked;
+    });
+    calculateTotals();
+  });
+}
+
+// Individual checkbox change
+serviceCheckboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    // Update "Select All" state
+    const allChecked = Array.from(serviceCheckboxes).every(cb => cb.checked);
+    if (selectAllCheckbox) {
+      selectAllCheckbox.checked = allChecked;
+    }
+    calculateTotals();
+  });
+});
+
+// Click on row to toggle checkbox
+document.querySelectorAll('.service-row').forEach(row => {
+  row.addEventListener('click', (e) => {
+    // Don't toggle if clicking directly on the checkbox
+    if (e.target.type === 'checkbox') return;
+
+    const checkbox = row.querySelector('.service-checkbox');
+    if (checkbox) {
+      checkbox.checked = !checkbox.checked;
+
+      // Update "Select All" state
+      const allChecked = Array.from(serviceCheckboxes).every(cb => cb.checked);
+      if (selectAllCheckbox) {
+        selectAllCheckbox.checked = allChecked;
+      }
+
+      calculateTotals();
+    }
+  });
+});
+
+// Initial calculation on page load
+if (totalMonthlyEl || totalYearlyEl) {
+  calculateTotals();
+}

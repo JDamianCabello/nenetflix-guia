@@ -3,181 +3,193 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, maximum-scale=5"/>
-  <title>NENETFLIX · Streaming privado en Plex</title>
-  <meta name="theme-color" content="#0b0b0f"/>
-  <meta name="description" content="NENETFLIX: tu streaming privado en Plex. 50€ al año, 2 pantallas simultáneas y peticiones incluidas."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900;1000&display=swap" rel="stylesheet">
+  <title>NENETFLIX - Servicio de Streaming Privado en Plex</title>
+  <meta name="theme-color" content="#0066CC"/>
+  <meta name="description" content="NENETFLIX: tu servicio de streaming privado en Plex. 50€ al año, 2 pantallas simultáneas y peticiones incluidas."/>
+  <meta property="og:title" content="NENETFLIX - Streaming Privado en Plex" />
+  <meta property="og:description" content="50€ al año. 2 pantallas simultáneas. Peticiones incluidas." />
+  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="styles.css"/>
-<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
-<link rel="apple-touch-icon" href="favicon.svg"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="apple-touch-icon" href="favicon.svg"/>
 </head>
-<body class="page-index">
-  <!-- Track (always visible) + progress bar (fills on scroll) -->
+<body>
+  <!-- Progress bar -->
   <div class="progress" id="progress" aria-hidden="true">
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
+  <!-- Header -->
   <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="NENETFLIX">
+        <div class="brand-title">NENETFLIX</div>
+        <div class="brand-sub">Servicio de Streaming Privado</div>
+      </a>
 
-    <a class="brand" href="index.html" aria-label="NENETFLIX">
-      <div class="brand-title">NENETFLIX</div>
-      <div class="brand-sub">TU STREAMING PRIVADO EN PLEX</div>
-    </a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menú de navegación">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
 
-    <nav class="actions" aria-label="Accesos">
-      <a class="btn btn-nav" href="guide.html">Guía</a>
-      <a class="btn btn-nav" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Peticiones</a>
-    </nav>
-  </header>
-
-
-  <main class="wrap">
-    <section class="hero hero-landing">
-      <div class="hero-inner centered">
-        <h1 class="landing-title">BIENVENIDO A
-          <span class="hero-nn" id="heroNN" role="button" tabindex="0" aria-label="NENETFLIX" data-nn-toggle>
-            
-            <span class="hero-nn-word" aria-hidden="true">
-              <span class="nn-letter nn-n1">N</span>
-              <span class="nn-letter nn-e1">E</span>
-              <span class="nn-letter nn-n2">N</span>
-              <span class="nn-rest">ETFLIX</span>
-            </span>
-          </span>
-        </h1>
-        <p class="hero-lead landing-lead">
-          Accede a un catálogo enorme y en crecimiento. Disfruta en <strong>2 pantallas simultáneas</strong> 👥📺
-        </p>
-
-        <div class="cta-row">
-          <a class="btn btn-primary btn-lg" href="guide.html">📘 Ver guía de configuración</a>
-          <a class="btn btn-ghost btn-lg" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">📝 Abrir PETICIONES</a>
-        </div>
-
-        <div class="price-card landing-price">
-          <section class="section compare-section" id="comparativa">
-  <div class="compare-wrap card">
-    <div class="compare-head">
-      <div class="compare-brand">NENETFLIX</div>
-      <div class="compare-title">🎬 Todas las plataformas de vídeo en un solo lugar</div>
-      <div class="compare-sub">💸 50 € / año · 👥 2 pantallas simultáneas</div>
-      <div class="compare-note">📍 Sin bloqueo por localización: compártelo donde quieras y con quien quieras</div>
+      <nav class="nav-tabs" aria-label="Navegación principal">
+        <a class="nav-tab active" href="index.html">Inicio</a>
+        <a class="nav-tab" href="guide.html">Guía de instalación</a>
+        <a class="nav-tab" href="comparison.html">Comparación</a>
+        <a class="nav-tab" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Peticiones</a>
+      </nav>
     </div>
 
-    <div class="compare-mid">
-      <div class="compare-kicker">📊 Comparativa rápida (ejemplo):</div>
-      <div class="compare-disclaimer"><span class="disclaimer-icon">ℹ️</span><span>Nota: esta tabla es solo un ejemplo con algunas plataformas conocidas. Existen muchas más, pero no las incluimos todas en la comparativa.</span></div>
-      <div class="compare-table">
-        <div class="trow thead-mini">
-          <div class="tcell"></div>
-          <div class="tcell center"></div>
-          <div class="tcell center minihead">mes</div>
-          <div class="tcell center minihead">año</div>
-        </div>
-<div class="trow">
-          <div class="tcell">Netflix (pack básico con anuncios)</div>
-          <div class="tcell center qty"></div>
-          <div class="tcell center">7,99€</div>
-          <div class="tcell center">96€</div>
-        </div>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+      <nav class="mobile-nav">
+        <a class="mobile-nav-item active" href="index.html">Inicio</a>
+        <a class="mobile-nav-item" href="guide.html">Guía de instalación</a>
+        <a class="mobile-nav-item" href="comparison.html">Comparación</a>
+        <a class="mobile-nav-item" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Peticiones</a>
+      </nav>
+    </div>
+  </header>
 
-        <div class="trow">
-          <div class="tcell">HBO Max (básico con anuncios)</div>
-          <div class="tcell center qty"></div>
-          <div class="tcell center">6,99€</div>
-          <div class="tcell center">84€</div>
-        </div>
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>Bienvenido a NENETFLIX</h1>
+        <p>Accede a un catálogo enorme y en crecimiento. Disfruta en <strong>2 pantallas simultáneas</strong> con todos tus dispositivos.</p>
 
-        <div class="trow">
-          <div class="tcell">Disney+ (estándar con anuncios)</div>
-          <div class="tcell center qty"></div>
-          <div class="tcell center">6,99€</div>
-          <div class="tcell center">84€</div>
-        </div>
-
-        <div class="trow ttotal">
-          <div class="tcell"></div>
-          <div class="tcell"></div>
-          <div class="tcell right"><strong>Total</strong></div>
-          <div class="tcell center"><strong>264 €</strong></div>
-        </div>
-      </div>
-
-      </div>
-  </div>
-</section>
-
-          </div>
-      </div>
-    </section>
-
-    <section class="section landing-includes" id="contenido">
-      <div class="section-head">
-        <h2>🍿 ¿Qué incluye NENETFLIX?</h2>
-        <p>Todo en un solo lugar, con estrenos y contenido a la carta.</p>
-      </div>
-
-      <div class="cards">
-        <div class="card">
-          <div class="card-title">🎬 Películas</div>
-          <div class="card-text">De cualquier plataforma, en la mejor calidad posible.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">📺 Series</div>
-          <div class="card-text">Temporadas completas y novedades semanales.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">⭐ Estrenos</div>
-          <div class="card-text">Lo más reciente de cine y lanzamientos.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">🌀 Anime</div>
-          <div class="card-text">Series y películas de anime en un catálogo vivo.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">🎥 Documentales</div>
-          <div class="card-text">Ciencia, historia, true crime y más.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Peticiones</div>
-          <div class="card-text">Si no está, lo solicitas desde la web y lo añadimos.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section landing-how">
-      <div class="section-head">
-        <h2>⚡ ¿Cómo funciona?</h2>
-        <p>Elige tu dispositivo y entra en Plex.</p>
-      </div>
-
-      <div class="cards">
-        <div class="card">
-          <div class="card-title">💻 Ordenador</div>
-          <div class="card-text">Entra desde el navegador: <strong>app.plex.tv</strong></div>
-        </div>
-        <div class="card">
-          <div class="card-title">📱 Móvil</div>
-          <div class="card-text">Usa <strong>app.plex.tv</strong> en el navegador para evitar Plex Pass.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">📺 Smart TV</div>
-          <div class="card-text">Descarga la app <strong>PLEX</strong> en tu TV y vincula el código con el móvil.</div>
-        </div>
-      </div>
-
-      <div class="landing-foot">
-        <div class="landing-note">✅ No tienes que registrarte: solo dinos tu correo y nosotros creamos tu cuenta.</div>
         <div class="cta-row">
-          <a class="btn btn-primary btn-lg" href="guide.html">📘 Ir a la guía</a>
+          <a class="btn btn-primary btn-lg" href="guide.html">Ver guía de configuración</a>
+          <a class="btn btn-lg" href="https://peticiones.nenetflix.uk/" target="_blank" rel="noreferrer">Hacer peticiones</a>
+        </div>
+
+        <!-- Price Card -->
+        <div class="price-card">
+          <div class="price-main">50€</div>
+          <div class="price-sub">al año • 2 pantallas simultáneas</div>
         </div>
       </div>
     </section>
 
-    </main>
+    <!-- Comparison Section (Simplified) -->
+    <section class="section" style="background-color: var(--color-bg-alt);">
+      <div class="container">
+        <div class="section-head">
+          <h2>¿Por qué NENETFLIX?</h2>
+          <p>Ahorra hasta un 90% comparado con suscripciones tradicionales</p>
+        </div>
 
+        <div class="compare-simple">
+          <div class="compare-simple-card">
+            <div class="compare-simple-label">Otras plataformas</div>
+            <div class="compare-simple-price">~575€</div>
+            <div class="compare-simple-period">al año</div>
+            <div class="compare-simple-note">Netflix, HBO, Disney+, Prime Video, Apple TV+, Movistar Plus+...</div>
+          </div>
+
+          <div class="compare-simple-vs">VS</div>
+
+          <div class="compare-simple-card highlight">
+            <div class="compare-simple-label">NENETFLIX</div>
+            <div class="compare-simple-price">50€</div>
+            <div class="compare-simple-period">al año</div>
+            <div class="compare-simple-note">Todo incluido • 2 pantallas simultáneas</div>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-lg" href="comparison.html">Ver comparación detallada</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>¿Qué incluye NENETFLIX?</h2>
+          <p>Todo en un solo lugar, con estrenos y contenido a la carta.</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Películas</div>
+            <div class="card-text">De cualquier plataforma, en la mejor calidad posible.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Series</div>
+            <div class="card-text">Temporadas completas y novedades semanales.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Estrenos</div>
+            <div class="card-text">Lo más reciente de cine y lanzamientos.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Anime</div>
+            <div class="card-text">Series y películas de anime en un catálogo vivo.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Documentales</div>
+            <div class="card-text">Ciencia, historia, true crime y más.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Peticiones</div>
+            <div class="card-text">Si no está, lo solicitas desde la web y lo añadimos.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>¿Cómo funciona?</h2>
+          <p>Elige tu dispositivo y entra en Plex.</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Ordenador</div>
+            <div class="card-text">Entra desde el navegador: <strong><a href="https://app.plex.tv" target="_blank" rel="noreferrer">app.plex.tv</a></strong></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Móvil</div>
+            <div class="card-text">Usa <strong><a href="https://app.plex.tv" target="_blank" rel="noreferrer">app.plex.tv</a></strong> en el navegador para evitar Plex Pass.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Smart TV</div>
+            <div class="card-text">Descarga la app <strong>PLEX</strong> en tu TV y vincula el código con el móvil.</div>
+          </div>
+        </div>
+
+        <div class="cta-row" style="margin-top: 2rem;">
+          <p style="background-color: #F8F9FA; padding: 1rem; border-radius: 8px; border: 1px solid #DEE2E6;">
+            <strong>Nota:</strong> No tienes que registrarte. Solo dinos tu correo y nosotros creamos tu cuenta.
+          </p>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary btn-lg" href="guide.html">Ir a la guía completa</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+      <div class="container">
+        <div class="footer-card">
+          <h2>¿Listo para empezar?</h2>
+          <p>Si quieres más información o activar tu acceso, ponte en contacto con nosotros.</p>
+        </div>
+        <div class="footer-mini">© NENETFLIX - Servicio de Streaming Privado</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Back to top button -->
   <button class="to-top" id="toTop" aria-label="Volver arriba">↑</button>
 
   <script src="app.js"></script>
