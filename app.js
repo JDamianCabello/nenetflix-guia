@@ -254,3 +254,48 @@ document.querySelectorAll('.service-row').forEach(row => {
 if (totalMonthlyEl || totalYearlyEl) {
   calculateTotals();
 }
+
+// Dark Mode Toggle
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
+
+// Check for saved theme preference or detect system preference
+function getInitialTheme() {
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme) {
+    return savedTheme;
+  }
+
+  // Detect system preference
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+
+  return 'light';
+}
+
+// Set initial theme
+const initialTheme = getInitialTheme();
+htmlElement.setAttribute('data-theme', initialTheme);
+
+// Theme toggle click handler
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+}
+
+// Listen for system theme changes (optional, updates in real-time if user changes OS theme)
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only auto-switch if user hasn't manually set a preference
+    if (!localStorage.getItem('theme')) {
+      htmlElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+}

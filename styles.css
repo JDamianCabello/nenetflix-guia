@@ -4,20 +4,33 @@
 
 /* CSS Variables */
 :root {
-  /* Colors */
-  --color-primary: #0066CC;
-  --color-primary-dark: #0052A3;
-  --color-text: #212529;
-  --color-text-light: #6C757D;
+  /* Colors - Light Mode */
+  --color-primary: #FF6B35;
+  --color-primary-dark: #E55A1F;
+  --color-accent-red: #FF6B35;
+  --color-text: #1F2937;
+  --color-text-light: #6B7280;
   --color-bg: #FFFFFF;
-  --color-bg-alt: #F8F9FA;
-  --color-border: #DEE2E6;
-  --color-border-light: #E9ECEF;
+  --color-bg-alt: #F9FAFB;
+  --color-border: #E5E7EB;
+  --color-border-light: #F3F4F6;
+  --color-checkbox-border: #D1D5DB;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  /* Focus/Glow effects */
+  --glow-light: 0 0 0 4px rgba(255, 107, 53, 0.08);
+  --glow-medium: 0 0 0 4px rgba(255, 107, 53, 0.12);
+  --glow-strong: 0 0 0 4px rgba(255, 107, 53, 0.15);
+
+  /* Background tints */
+  --bg-primary-light: rgba(255, 107, 53, 0.03);
+  --bg-primary-medium: rgba(255, 107, 53, 0.05);
+  --bg-primary-strong: rgba(255, 107, 53, 0.1);
+  --bg-overlay: rgba(0, 0, 0, 0.02);
 
   /* Spacing */
   --spacing-xs: 0.5rem;
@@ -42,6 +55,36 @@
 
   --line-height-base: 1.6;
   --line-height-heading: 1.2;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-primary: #FF8C5A;
+  --color-primary-dark: #FF6B35;
+  --color-accent-red: #FF8C5A;
+  --color-text: #F9FAFB;
+  --color-text-light: #D1D5DB;
+  --color-bg: #111827;
+  --color-bg-alt: #1F2937;
+  --color-border: #374151;
+  --color-border-light: #4B5563;
+  --color-checkbox-border: #6B7280;
+
+  /* Shadows for dark mode */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+
+  /* Focus/Glow effects */
+  --glow-light: 0 0 0 4px rgba(255, 140, 90, 0.15);
+  --glow-medium: 0 0 0 4px rgba(255, 140, 90, 0.2);
+  --glow-strong: 0 0 0 4px rgba(255, 140, 90, 0.25);
+
+  /* Background tints */
+  --bg-primary-light: rgba(255, 140, 90, 0.05);
+  --bg-primary-medium: rgba(255, 140, 90, 0.08);
+  --bg-primary-strong: rgba(255, 140, 90, 0.12);
+  --bg-overlay: rgba(255, 255, 255, 0.02);
 }
 
 /* Reset & Base Styles */
@@ -214,7 +257,7 @@ main {
 
 .mobile-nav-item.active {
   color: var(--color-primary);
-  background-color: rgba(0,102,204,0.05);
+  background-color: var(--bg-primary-medium);
   border-left: 4px solid var(--color-primary);
   font-weight: 700;
 }
@@ -247,7 +290,7 @@ main {
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: #E50914;
+  color: var(--color-accent-red);
 }
 
 .brand-sub {
@@ -256,6 +299,64 @@ main {
   color: var(--color-text-light);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 80px;
+  right: var(--spacing-md);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background-color: var(--color-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: var(--color-text);
+  z-index: 998;
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-toggle:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle .moon-icon {
+  opacity: 0;
+  transform: rotate(180deg) scale(0);
+}
+
+[data-theme="dark"] .theme-toggle .sun-icon {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0);
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 .nav-tabs {
@@ -279,14 +380,14 @@ main {
 
 .nav-tab:hover {
   color: var(--color-text);
-  background-color: rgba(0,102,204,0.03);
+  background-color: var(--bg-primary-light);
 }
 
 .nav-tab.active {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
   font-weight: 700;
-  background-color: rgba(0,102,204,0.05);
+  background-color: var(--bg-primary-medium);
 }
 
 /* Buttons */
@@ -514,7 +615,7 @@ main {
 .savings-highlight {
   margin-top: var(--spacing-xl);
   padding: var(--spacing-lg);
-  background: linear-gradient(135deg, rgba(0,102,204,0.1), rgba(0,102,204,0.05));
+  background: linear-gradient(135deg, var(--bg-primary-strong), var(--bg-primary-medium));
   border: 2px solid var(--color-primary);
   border-radius: var(--radius-lg);
   text-align: center;
@@ -625,24 +726,24 @@ main {
   -moz-appearance: none;
   width: 22px;
   height: 22px;
-  border: 2px solid #D0D0D0;
+  border: 2px solid var(--color-checkbox-border);
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: #FFFFFF;
+  background-color: var(--color-bg);
   flex-shrink: 0;
 }
 
 .service-checkbox:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08);
+  box-shadow: var(--glow-light);
 }
 
 .service-checkbox:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.15);
+  box-shadow: var(--glow-strong);
 }
 
 .service-checkbox:checked {
@@ -664,9 +765,9 @@ main {
 }
 
 .service-checkbox:checked:hover {
-  background-color: #0052A3;
-  border-color: #0052A3;
-  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  box-shadow: var(--glow-medium);
 }
 
 .service-row {
@@ -680,7 +781,7 @@ main {
 
 .service-row:has(.service-checkbox:not(:checked)) {
   opacity: 0.5;
-  background-color: rgba(0,0,0,0.02);
+  background-color: var(--bg-overlay);
 }
 
 .service-row:has(.service-checkbox:not(:checked)):hover {
@@ -1028,6 +1129,12 @@ summary:hover {
     grid-template-columns: 50px 1.5fr 1fr 1fr;
     font-size: 13px;
   }
+
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    top: 75px;
+  }
 }
 
 /* Responsive: Mobile */
@@ -1075,6 +1182,14 @@ summary:hover {
   /* Show mobile menu on mobile */
   .mobile-menu {
     display: block;
+  }
+
+  /* Adjust theme toggle for mobile */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    top: 70px;
+    right: var(--spacing-sm);
   }
 
   .section {
